@@ -141,16 +141,6 @@ function renderUI(dataObj) {
         <canvas id="sksChart"></canvas>
       </div>
     </div>
-    <div class="pie-charts-row">
-      <div class="pie-chart-item">
-        <h5>Total Nilai A</h5>
-        <canvas id="pieChartA"></canvas>
-      </div>
-      <div class="pie-chart-item">
-        <h5>Total Nilai B</h5>
-        <canvas id="pieChartB"></canvas>
-      </div>
-    </div>
   `;
   document.getElementById("charts").appendChild(chartsRow);
 
@@ -289,72 +279,6 @@ function renderUI(dataObj) {
     },
   });
 
-  // Pie Chart untuk Total Nilai A
-  new Chart(document.getElementById("pieChartA"), {
-    type: "pie",
-    data: {
-      labels: semesterData.map((d) => `Semester ${d.semester}`),
-      datasets: [
-        {
-          data: semesterData.map((d) => d.totalA),
-          backgroundColor: [
-            "#2ecc71",
-            "#27ae60",
-            "#229954",
-            "#1e8449",
-            "#186a3b",
-            "#145a32",
-            "#0e4d2a",
-            "#0a3a20",
-            "#0b4d2b",
-            "#0c5f37",
-          ],
-          borderWidth: 1,
-          borderColor: "#fff",
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: "right", labels: { boxWidth: 12 } },
-      },
-    },
-  });
-
-  // Pie Chart untuk Total Nilai B
-  new Chart(document.getElementById("pieChartB"), {
-    type: "pie",
-    data: {
-      labels: semesterData.map((d) => `Semester ${d.semester}`),
-      datasets: [
-        {
-          data: semesterData.map((d) => d.totalB),
-          backgroundColor: [
-            "#f39c12",
-            "#e67e22",
-            "#d35400",
-            "#ba6b0c",
-            "#a04000",
-            "#b45f06",
-            "#9c5a0d",
-            "#874d0c",
-            "#6b3e0a",
-            "#4f2e07",
-          ],
-          borderWidth: 1,
-          borderColor: "#fff",
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: "right", labels: { boxWidth: 12 } },
-      },
-    },
-  });
-
   // Tabel per Semester
   const container = document.getElementById("container");
   semesters.forEach((semester) => {
@@ -476,19 +400,37 @@ function renderUI(dataObj) {
           <div class="stat-value">${ipTerendah.toFixed(2)}</div>
           <div class="stat-trend">Semester ${semTerendah}</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-title">Total Grade A</div>
-          <div class="stat-value">${totalGradeA}</div>
-          <div class="stat-trend">${((totalGradeA / totalMK) * 100).toFixed(1)}% dari total</div>
         </div>
-        <div class="stat-card">
-          <div class="stat-title">Total Grade B</div>
-          <div class="stat-value">${totalGradeB}</div>
-          <div class="stat-trend">${((totalGradeB / totalMK) * 100).toFixed(1)}% dari total</div>
+        <div class=".pie-charts-row">
+            <div class="pie-chart-item">
+                <h5>Total Nilai A & B</h5>
+                <canvas id="pieChartA"></canvas>
+            </div>
         </div>
-      </div>
     </div>
   `;
+
+  // Pie Chart untuk Total Nilai A
+  new Chart(document.getElementById("pieChartA"), {
+    type: "pie",
+    data: {
+      labels: ["Nilai A", "Nilai B"],
+      datasets: [
+        {
+          data: [totalGradeA, totalGradeB],
+          backgroundColor: ["#2ecc71", "#cc872e"],
+          borderWidth: 1,
+          borderColor: "#fff",
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "bottom", labels: { boxWidth: 12 } },
+      },
+    },
+  });
 }
 
 // Inisialisasi pertama kali dengan data default
