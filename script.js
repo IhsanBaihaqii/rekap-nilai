@@ -226,13 +226,13 @@ function renderUI(dataObj) {
       labels: semesterData.map((d) => `Semester ${d.semester}`),
       datasets: [
         {
-          label: "Grade A",
+          label: "Nilai A",
           data: semesterData.map((d) => d.totalA),
           backgroundColor: "#2ecc71",
           borderRadius: 6,
         },
         {
-          label: "Grade B",
+          label: "Nilai B",
           data: semesterData.map((d) => d.totalB),
           backgroundColor: "#f39c12",
           borderRadius: 6,
@@ -241,7 +241,7 @@ function renderUI(dataObj) {
     },
     options: {
       responsive: true,
-      plugins: { legend: { position: "top" } },
+      plugins: { legend: { position: "bottom" } },
       scales: {
         y: {
           beginAtZero: true,
@@ -386,12 +386,7 @@ function renderUI(dataObj) {
   document.getElementById("final").innerHTML = `
     <div class="final-box">
       <h3>📊 Ringkasan Akademik</h3>
-      <div class="dashboard-grid">
-        <div class="stat-card">
-          <div class="stat-title">Total Mata Kuliah</div>
-          <div class="stat-value">${totalMK}</div>
-          <div class="stat-trend">${semesters.length} Semester</div>
-        </div>
+      < class="dashboard-grid">
         <div class="stat-card">
           <div class="stat-title">Total SKS</div>
           <div class="stat-value">${totalAllSKS.toFixed(0)}</div>
@@ -412,8 +407,12 @@ function renderUI(dataObj) {
           <div class="stat-value">${ipTerendah.toFixed(2)}</div>
           <div class="stat-trend">Semester ${semTerendah}</div>
         </div>
-        </div>
-        <div class=".pie-charts-row">
+        <div class="pie-charts-row">
+            <div class="stat-card">
+              <div class="stat-title">Total Mata Kuliah</div>
+              <div class="stat-value">${totalMK}</div>
+              <div class="stat-trend">${semesters.length} Semester</div>
+            </div>
             <div class="pie-chart-item">
                 <h5>Total Nilai A & B</h5>
                 <canvas id="pieChartA"></canvas>
