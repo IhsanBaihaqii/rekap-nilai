@@ -85,73 +85,70 @@ const totalGradeB = rows.filter(
   (row) => row.split("\t")[5].trim() === "B",
 ).length;
 
-document.getElementById("dashboard").innerHTML = `
-            <div class="dashboard-grid">
-                <div class="stat-card">
-                    <div class="stat-title">Total Mahasiswa</div>
-                    <div class="stat-value">1</div>
-                    <div class="stat-trend">Aktif</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Total Mata Kuliah</div>
-                    <div class="stat-value">${totalMK}</div>
-                    <div class="stat-trend">${semesters.length} Semester</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Total SKS</div>
-                    <div class="stat-value">${totalAllSKS.toFixed(0)}</div>
-                    <div class="stat-trend">Rata-rata ${(totalAllSKS / semesters.length).toFixed(1)} per semester</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">IPK</div>
-                    <div class="stat-value">${ipk.toFixed(2)}</div>
-                    <div class="stat-trend">${ipk >= 3.5 ? "Cum Laude" : ipk >= 3.0 ? "Sangat Memuaskan" : "Memuaskan"}</div>
-                </div>
-            </div>
-        `;
-
 // Grafik
 const chartContainer = document.createElement("div");
 chartContainer.className = "chart-container";
 chartContainer.innerHTML = `
             <div class="chart-header">
                 <h3>📈 Analisis Tren Akademik</h3>
-                <div class="chart-legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #4a90e2;"></div>
-                        <span>IP Semester</span>
+            </div>
+            <div class="charts-row">
+                <div class="chart-box">
+                    <h4>Data IPK</h4>
+                    <canvas id="ipkChart"></canvas>
+                </div>
+                <div class="chart-box">
+                    <div class="chart-header">
+                        <h4>📈 Data MATKUL</h4>
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #f39c12;"></div>
+                                <span>Total SKS</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background: #2ecc71;"></div>
+                                <span>Jumlah MK</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #f39c12;"></div>
-                        <span>Total SKS</span>
-                    </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #2ecc71;"></div>
-                        <span>Jumlah MK</span>
-                    </div>
+                    <canvas id="mapelChart"></canvas>
                 </div>
             </div>
-            <canvas id="trendChart"></canvas>
         `;
 
 const chartsRow = document.createElement("div");
-chartsRow.className = "charts-row";
+chartsRow.className = "chart-container";
 chartsRow.innerHTML = `
+        <div class="chart-header">
+            <h3>Distribusi Nilai per Semester</h3>
+            <div class="chart-legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #2ecc71;"></div>
+                    <span>Nilai A</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f39c12;"></div>
+                    <span>Nilai B</span>
+                </div>
+            </div>
+        </div>
+        <div class="charts-row">
             <div class="chart-box">
-                <h4>Distribusi Nilai per Semester</h4>
+                <h4>Tabel Nilai</h4>
                 <canvas id="gradeChart"></canvas>
             </div>
             <div class="chart-box">
-                <h4>Beban SKS per Semester</h4>
+                <h4>📈 Grafik Nilai</h4>
                 <canvas id="sksChart"></canvas>
             </div>
+        </div>
         `;
 
 document.getElementById("charts").appendChild(chartContainer);
 document.getElementById("charts").appendChild(chartsRow);
 
 // Trend Chart
-new Chart(document.getElementById("trendChart"), {
+new Chart(document.getElementById("ipkChart"), {
   type: "line",
   data: {
     labels: semesterData.map((d) => `Semester ${d.semester}`),
@@ -165,6 +162,41 @@ new Chart(document.getElementById("trendChart"), {
         fill: true,
         yAxisID: "y",
       },
+    ],
+  },
+  options: {
+    responsive: true,
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        type: "linear",
+        display: true,
+        position: "left",
+        title: {
+          display: true,
+          text: "IP Semester",
+        },
+        min: 2.5,
+        max: 4.0,
+      },
+    },
+  },
+});
+
+// Mapel Chart
+new Chart(document.getElementById("mapelChart"), {
+  type: "line",
+  data: {
+    labels: semesterData.map((d) => `Semester ${d.semester}`),
+    datasets: [
       {
         label: "Total SKS",
         data: semesterData.map((d) => d.totalSKS),
@@ -197,21 +229,10 @@ new Chart(document.getElementById("trendChart"), {
       },
     },
     scales: {
-      y: {
-        type: "linear",
-        display: true,
-        position: "left",
-        title: {
-          display: true,
-          text: "IP Semester",
-        },
-        min: 2.5,
-        max: 4.0,
-      },
       y1: {
         type: "linear",
         display: true,
-        position: "right",
+        position: "left",
         title: {
           display: true,
           text: "Jumlah",
@@ -264,35 +285,55 @@ new Chart(document.getElementById("gradeChart"), {
   },
 });
 
-// SKS Distribution Chart
+// Nilai
 new Chart(document.getElementById("sksChart"), {
   type: "line",
   data: {
     labels: semesterData.map((d) => `Semester ${d.semester}`),
     datasets: [
       {
-        label: "Total SKS",
-        data: semesterData.map((d) => d.totalSKS),
-        borderColor: "#e74c3c",
-        backgroundColor: "rgba(231, 76, 60, 0.1)",
+        label: "Nilai A",
+        data: semesterData.map((d) => d.totalA),
+        borderColor: "#2ecc71",
+        backgroundColor: "rgba(243, 156, 18, 0.1)",
         tension: 0.4,
         fill: true,
+        yAxisID: "y1",
+      },
+      {
+        label: "Nilai B",
+        data: semesterData.map((d) => d.totalB),
+        borderColor: "#f39c12",
+        backgroundColor: "rgba(46, 204, 113, 0.1)",
+        tension: 0.4,
+        fill: true,
+        yAxisID: "y1",
       },
     ],
   },
   options: {
     responsive: true,
+    interaction: {
+      mode: "index",
+      intersect: false,
+    },
     plugins: {
       legend: {
         display: false,
       },
     },
     scales: {
-      y: {
-        beginAtZero: true,
+      y1: {
+        type: "linear",
+        display: true,
+        position: "left",
         title: {
           display: true,
-          text: "Total SKS",
+          text: "Jumlah",
+        },
+        min: 0,
+        grid: {
+          drawOnChartArea: false,
         },
       },
     },
@@ -320,7 +361,6 @@ semesters.forEach((semester) => {
                     <span>📚 ${sem.data.length} MK</span>
                     <span>⭐ A: ${totalA}</span>
                     <span>⭐ B: ${totalB}</span>
-                    <span>📊 IP: ${ip.toFixed(2)}</span>
                 </div>
             `;
   semesterCard.appendChild(semesterHeader);
@@ -416,6 +456,22 @@ document.getElementById("final").innerHTML = `
             <div class="final-box">
                 <h3>📊 Ringkasan Akademik</h3>
                 <div class="dashboard-grid">
+                    
+                    <div class="stat-card">
+                        <div class="stat-title">Total Mata Kuliah</div>
+                        <div class="stat-value">${totalMK}</div>
+                        <div class="stat-trend">${semesters.length} Semester</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Total SKS</div>
+                        <div class="stat-value">${totalAllSKS.toFixed(0)}</div>
+                        <div class="stat-trend">Rata-rata ${(totalAllSKS / semesters.length).toFixed(1)} per semester</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">IPK</div>
+                        <div class="stat-value">${ipk.toFixed(2)}</div>
+                        <div class="stat-trend">${ipk >= 3.5 ? "Cum Laude" : ipk >= 3.0 ? "Sangat Memuaskan" : "Memuaskan"}</div>
+                    </div>
                     <div class="stat-card">
                         <div class="stat-title">IP Tertinggi</div>
                         <div class="stat-value">${Math.max(...semesterData.map((d) => d.ip)).toFixed(2)}</div>
