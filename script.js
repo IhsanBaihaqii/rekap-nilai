@@ -162,6 +162,10 @@ function renderUI(dataObj) {
     },
     options: {
       responsive: true,
+      interaction: {
+        mode: "index",
+        intersect: false,
+      },
       plugins: { legend: { display: false } },
       scales: {
         y: {
@@ -201,6 +205,10 @@ function renderUI(dataObj) {
     },
     options: {
       responsive: true,
+      interaction: {
+        mode: "index",
+        intersect: false,
+      },
       plugins: { legend: { display: false } },
       scales: {
         y: {
@@ -269,6 +277,10 @@ function renderUI(dataObj) {
     },
     options: {
       responsive: true,
+      interaction: {
+        mode: "index",
+        intersect: false,
+      },
       plugins: { legend: { display: false } },
       scales: {
         y: {
