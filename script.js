@@ -386,7 +386,7 @@ function renderUI(dataObj) {
   document.getElementById("final").innerHTML = `
     <div class="final-box">
       <h3>📊 Ringkasan Akademik</h3>
-      < class="dashboard-grid">
+      <div class="dashboard-grid">
         <div class="stat-card">
           <div class="stat-title">Total SKS</div>
           <div class="stat-value">${totalAllSKS.toFixed(0)}</div>
@@ -418,6 +418,7 @@ function renderUI(dataObj) {
                 <canvas id="pieChartA"></canvas>
             </div>
         </div>
+      </div>
     </div>
   `;
 
