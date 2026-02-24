@@ -2,7 +2,7 @@ function processData(inputData) {
   const rows = inputData
     .trim()
     .split("\n")
-    .filter((row) => row.trim() !== "");
+    .filter((row) => row.trim() !== "" && /^\d/.test(row.trim())); // Hanya ambil baris yang dimulai dengan angka
   const grouped = {};
 
   let totalAllSKS = 0;
@@ -11,6 +11,15 @@ function processData(inputData) {
   rows.forEach((row) => {
     const cols = row.split("\t");
     if (cols.length < 8) return; // skip invalid row
+    if (!/^\d+$/.test(cols[0].trim())) return;
+    if (
+      isNaN(cols[0]) ||
+      isNaN(cols[3]) ||
+      isNaN(cols[4]) ||
+      isNaN(cols[7].replace(",", "."))
+    ) {
+      return;
+    }
 
     const semester = cols[3];
     const sks = parseFloat(cols[4]);
@@ -414,7 +423,7 @@ function renderUI(dataObj) {
               <div class="stat-trend">${semesters.length} Semester</div>
             </div>
             <div class="pie-chart-item">
-                <h5>Total Nilai A & B</h5>
+                <h5>Nilai A & B</h5>
                 <canvas id="pieChartA"></canvas>
             </div>
         </div>
