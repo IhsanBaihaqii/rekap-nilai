@@ -112,7 +112,7 @@ function renderUI(dataObj) {
     </div>
     <div class="charts-row">
       <div class="chart-box">
-        <h4>IP per Semester</h4>
+        <h4>Data IPS</h4>
         <canvas id="ipkChart"></canvas>
       </div>
       <div class="chart-box">
@@ -152,17 +152,30 @@ function renderUI(dataObj) {
     </div>
   `;
   document.getElementById("charts").appendChild(chartsRow);
-
+  let semseterBobot = 0;
+  let semseterSKS = 0;
   // Chart IPK
   new Chart(document.getElementById("ipkChart"), {
     type: "line",
     data: {
-      labels: semesterData.map((d) => `Semester ${d.semester}`),
+      labels: semesterData.map((d) => `Sem ${d.semester}`),
       datasets: [
         {
-          label: "IP Semester",
+          label: "IPS",
           data: semesterData.map((d) => d.ip),
           borderColor: "#4a90e2",
+          backgroundColor: "rgba(74, 144, 226, 0.1)",
+          tension: 0.4,
+          fill: true,
+        },
+        {
+          label: "IPK",
+          data: semesterData.map(function (d) {
+            semseterBobot += d.totalBobot;
+            semseterSKS += d.totalSKS;
+            return (semseterBobot / semseterSKS).toFixed(2);
+          }),
+          borderColor: "#e24a4a",
           backgroundColor: "rgba(74, 144, 226, 0.1)",
           tension: 0.4,
           fill: true,
@@ -175,7 +188,7 @@ function renderUI(dataObj) {
         mode: "index",
         intersect: false,
       },
-      plugins: { legend: { display: false } },
+      plugins: { legend: { display: true, position: "bottom" } },
       scales: {
         y: {
           beginAtZero: true,
@@ -190,7 +203,7 @@ function renderUI(dataObj) {
   new Chart(document.getElementById("mapelChart"), {
     type: "line",
     data: {
-      labels: semesterData.map((d) => `Semester ${d.semester}`),
+      labels: semesterData.map((d) => `Sem ${d.semester}`),
       datasets: [
         {
           label: "Total SKS",
@@ -232,7 +245,7 @@ function renderUI(dataObj) {
   new Chart(document.getElementById("gradeChart"), {
     type: "bar",
     data: {
-      labels: semesterData.map((d) => `Semester ${d.semester}`),
+      labels: semesterData.map((d) => `Sem ${d.semester}`),
       datasets: [
         {
           label: "Nilai A",
@@ -264,7 +277,7 @@ function renderUI(dataObj) {
   new Chart(document.getElementById("sksChart"), {
     type: "line",
     data: {
-      labels: semesterData.map((d) => `Semester ${d.semester}`),
+      labels: semesterData.map((d) => `Sem ${d.semester}`),
       datasets: [
         {
           label: "Nilai A",
