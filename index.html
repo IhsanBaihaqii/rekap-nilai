@@ -9,26 +9,34 @@
   </head>
   <body>
     <div class="main-container">
+      <!-- HEADER -->
       <div class="header">
-        <h2>📊 Rekap Nilai Mahasiswa</h2>
-        <p>Ihsan Baihaqi • Analisis Performa Akademik</p>
+        <div class="header-left">
+          <div class="header-icon">📊</div>
+          <div>
+            <h2>Rekap Nilai Mahasiswa</h2>
+            <p>Ihsan Baihaqi · Analisis Performa Akademik</p>
+          </div>
+        </div>
+        <div class="header-badge">ACADEMIC REPORT</div>
       </div>
 
-      <!-- Input Data Section -->
+      <!-- INPUT SECTION -->
       <div class="input-section">
-        <h3>✏️ Input Data Nilai</h3>
+        <div class="section-label">✏️ Input Data Nilai</div>
         <textarea
           id="dataInput"
-          rows="8"
-          placeholder="Tempel data nilai di sini (format: No Kode Nama Smt SKS Grade Nilai Bobot)"
+          rows="6"
+          placeholder="Tempel data nilai di sini (format tab-separated):&#10;No  Kode  Nama  Smt  SKS  Grade  Nilai  Bobot"
         ></textarea>
         <div class="input-actions">
-          <button id="updateBtn" class="btn-primary">🔄 Update Data</button>
+          <button id="updateBtn" class="btn-primary">↻ Update Data</button>
           <span class="input-hint">Edit teks di atas, lalu klik Update</span>
         </div>
       </div>
 
-      <!-- Container untuk grafik dan tabel -->
+      <!-- Dynamic content -->
+      <div id="stat-cards"></div>
       <div id="charts"></div>
       <div id="container"></div>
       <div id="final"></div>
