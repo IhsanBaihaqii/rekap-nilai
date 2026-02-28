@@ -591,6 +591,14 @@ function renderUI(dataObj) {
 const initialData = processData(document.getElementById("dataInput").value);
 renderUI(initialData);
 
+if (localStorage.getItem("input_data")) {
+  renderUI(processData(localStorage.getItem("input_data")));
+}
+
 document.getElementById("updateBtn").addEventListener("click", () => {
+  localStorage.setItem(
+    "input_data",
+    document.getElementById("dataInput").value,
+  );
   renderUI(processData(document.getElementById("dataInput").value));
 });
