@@ -270,7 +270,7 @@ function renderUI(dataObj) {
   const ipkLine = semesterData.map((d) => {
     cumBobot += d.totalBobot;
     cumSKS += d.totalSKS;
-    return parseFloat((cumBobot / cumSKS).toFixed(3));
+    return parseFloat((cumBobot / cumSKS).toFixed(2));
   });
 
   makeChart("ipkChart", {
@@ -280,7 +280,7 @@ function renderUI(dataObj) {
       datasets: [
         {
           label: "IPS",
-          data: semesterData.map((d) => parseFloat(d.ip.toFixed(3))),
+          data: semesterData.map((d) => parseFloat(d.ip.toFixed(2))),
           borderColor: C.blue,
           tension: 0.4,
           fill: true,
@@ -308,7 +308,7 @@ function renderUI(dataObj) {
       scales: {
         x: { grid: { color: D.gridColor }, ticks: { maxRotation: 45 } },
         y: {
-          min: 0,
+          min: 2.0,
           max: 4.0,
           grid: { color: D.gridColor },
           ticks: { stepSize: 0.5 },
@@ -419,7 +419,14 @@ function renderUI(dataObj) {
         },
       ],
     },
-    options: { ...sharedOpts },
+    options: {
+      ...sharedOpts,
+      scales: {
+        y: {
+          min: 0,
+        },
+      },
+    },
   });
 
   /* ─ SEMESTER TABLES ─ */
@@ -464,7 +471,7 @@ function renderUI(dataObj) {
                       <td style="font-family:'JetBrains Mono',monospace;font-size:0.77rem">${cols[1]}</td>
                       <td class="td-name">${cols[2]}</td>
                       <td>${cols[3]}</td>
-                      <td>${cols[4]}</td>
+                      <td>${Number(cols[4])}</td>
                       <td><span class="grade-badge ${cols[5].trim() === "A" ? "grade-A" : cols[5].trim() === "B" ? "grade-B" : "grade-C"}">${cols[5]}</span></td>
                       <td>${cols[6]}</td>
                       <td style="font-family:'JetBrains Mono',monospace">${cols[7]}</td>
