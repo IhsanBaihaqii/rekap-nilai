@@ -12,7 +12,9 @@
       <!-- HEADER -->
       <div class="header">
         <div class="header-left">
-          <div class="header-icon">📊</div>
+          <div class="header-icon">
+            <i class="fa-solid fa-chart-column"></i>
+          </div>
           <div>
             <h2>Rekap Nilai Mahasiswa</h2>
             <p>Ihsan Baihaqi · Analisis Performa Akademik</p>
@@ -21,26 +23,40 @@
         <div class="header-badge">ACADEMIC REPORT</div>
       </div>
 
-      <!-- INPUT SECTION -->
+      <!-- INPUT -->
       <div class="input-section">
-        <div class="section-label">✏️ Input Data Nilai</div>
+        <div class="section-label">
+          <i class="fa-solid fa-pen-to-square fa-xs"></i> Input Data Nilai
+        </div>
         <textarea
           id="dataInput"
           rows="6"
           placeholder="Tempel data nilai di sini (format tab-separated):&#10;No  Kode  Nama  Smt  SKS  Grade  Nilai  Bobot"
         ></textarea>
         <div class="input-actions">
-          <button id="updateBtn" class="btn-primary">↻ Update Data</button>
+          <button id="updateBtn" class="btn-primary">
+            <i class="fa-solid fa-arrows-rotate"></i> Update Data
+          </button>
           <span class="input-hint">Edit teks di atas, lalu klik Update</span>
         </div>
       </div>
 
-      <!-- Dynamic content -->
       <div id="stat-cards"></div>
       <div id="charts"></div>
       <div id="container"></div>
       <div id="final"></div>
     </div>
+
+    <!-- THEME TOGGLE (FIXED) -->
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      data-tooltip="Dark Mode"
+      aria-label="Toggle theme"
+    >
+      <i class="fa-solid fa-sun icon-sun"></i>
+      <i class="fa-solid fa-moon icon-moon"></i>
+    </button>
 
     <script src="script.js"></script>
   </body>
